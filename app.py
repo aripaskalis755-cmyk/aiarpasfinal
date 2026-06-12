@@ -39,7 +39,7 @@ def chat_with_groq(system_prompt, user_message):
     except Exception as e:
         return f"⚠️ Koneksi Groq terganggu: {str(e)}"
 
-# --- STYLE TEMA TERANG (LIGHT MODE) DENGAN TOMBOL SARAN CERAH ---
+# --- STYLE TEMA TERANG DENGAN TOMBOL PUTIH & AUTO-SCROLL ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -75,7 +75,6 @@ st.markdown("""
         flex-wrap: wrap;
     }
     
-    /* JUDUL WARNA GELAP */
     .title-section h1 {
         font-family: 'Space Grotesk', monospace;
         font-size: 2.8rem;
@@ -172,8 +171,6 @@ st.markdown("""
         border-color: #38bdf8 !important;
         box-shadow: 0 0 0 3px rgba(56,189,248,0.2) !important;
     }
-    
-    /* Tombol primary (kirim, dll) */
     button[kind="primary"] {
         background: linear-gradient(90deg, #0284c7, #38bdf8) !important;
         border: none !important;
@@ -183,20 +180,21 @@ st.markdown("""
         color: white !important;
     }
     
-    /* Tombol saran cepat (di kolom) - gaya terang */
+    /* TOMBOL PERTANYAAN CEPAT - WARNA PUTIH TERANG */
     div[data-testid="column"] button {
-        background: #f1f5f9 !important;
-        border: 1px solid #e2e8f0 !important;
+        background: white !important;
+        border: 1px solid #cbd5e1 !important;
         border-radius: 40px !important;
         color: #0284c7 !important;
         font-weight: 500 !important;
         transition: all 0.2s ease;
-        box-shadow: none !important;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.02) !important;
     }
     div[data-testid="column"] button:hover {
-        background: #e0f2fe !important;
+        background: #f0f9ff !important;
         border-color: #38bdf8 !important;
         color: #0369a1 !important;
+        transform: translateY(-1px);
     }
     
     .custom-divider {
@@ -248,6 +246,29 @@ components.html("""
     updateTime();
 </script>
 """, height=120)
+
+# --- AUTO-SCROLL JAVASCRIPT (untuk scroll otomatis ke bawah) ---
+components.html("""
+<script>
+    function scrollToBottom() {
+        const chatArea = document.querySelector('[data-testid="stChatMessage"]');
+        if (chatArea) {
+            chatArea.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+        // Coba scroll ke container utama
+        const containers = document.querySelectorAll('.stChatMessage');
+        if (containers.length > 0) {
+            containers[containers.length-1].scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+    }
+    // Jalankan setiap kali ada perubahan DOM
+    const observer = new MutationObserver(function(mutations) {
+        scrollToBottom();
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+    setTimeout(scrollToBottom, 100);
+</script>
+""", height=0)
 
 # --- DATA FUNCTIONS ---
 @st.cache_data(ttl=300)
@@ -363,7 +384,7 @@ with right_col:
             {"role": "assistant", "content": "Selamat datang di **AI ARPAS** – sistem informasi meteorologi dan geofisika terintegrasi. Saya siap membantu informasi gempa terkini, cuaca real-time, prakiraan iklim, dan fenomena kebumian lainnya. Silakan bertanya!"}
         ]
     
-    chat_container = st.container(height=420)
+    chat_container = st.container(height=450)
     with chat_container:
         for msg in st.session_state.messages:
             with st.chat_message(msg["role"]):
@@ -380,6 +401,7 @@ with right_col:
                 with st.chat_message("assistant"):
                     st.markdown(response)
         st.session_state.messages.append({"role": "assistant", "content": response})
+        st.rerun()
     
     # Tombol saran cepat
     st.markdown("#### 💡 Pertanyaan cepat")
