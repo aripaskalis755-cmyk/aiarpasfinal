@@ -39,7 +39,7 @@ def chat_with_groq(system_prompt, user_message):
     except Exception as e:
         return f"⚠️ Koneksi Groq terganggu: {str(e)}"
 
-# --- STYLE UTAMA (JUDUL PUTIH) ---
+# --- STYLE DENGAN WARNA PUTIH UNTUK SEMUA TEKS HEADER ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -75,7 +75,7 @@ st.markdown("""
         flex-wrap: wrap;
     }
     
-    /* JUDUL WARNA PUTIH SOLID */
+    /* JUDUL WARNA PUTIH */
     .title-section h1 {
         font-family: 'Space Grotesk', monospace;
         font-size: 2.8rem;
@@ -86,6 +86,7 @@ st.markdown("""
         text-shadow: 0 0 15px rgba(0,180,216,0.5);
     }
     
+    /* BADGE BMKG - teks putih */
     .bmkg-badge {
         background: linear-gradient(135deg, #0077b6, #023e8a);
         padding: 4px 14px;
@@ -98,6 +99,14 @@ st.markdown("""
         border: 1px solid rgba(255,255,255,0.3);
     }
     
+    /* Teks "Sistem Meteorologi & Geofisika" menjadi putih */
+    .header-subtitle {
+        color: white !important;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+    
+    /* JAM - warna putih solid */
     .live-clock {
         background: rgba(0, 0, 0, 0.6);
         backdrop-filter: blur(8px);
@@ -107,12 +116,12 @@ st.markdown("""
         font-family: 'Space Grotesk', monospace;
         font-size: 1rem;
         font-weight: 600;
-        color: #b9f3ff;
+        color: white !important;
         box-shadow: 0 0 10px rgba(0,180,216,0.3);
         letter-spacing: 1px;
     }
     
-    /* KARTU INFO */
+    /* KARTU INFO (tidak diubah) */
     .info-panel {
         background: rgba(15, 25, 40, 0.6);
         backdrop-filter: blur(8px);
@@ -209,7 +218,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- HEADER (HTML + JS) ---
+# --- HEADER (HTML + JS) dengan teks putih ---
 components.html("""
 <div class="main-header">
     <div style="display: flex; align-items: center; gap: 1.5rem;">
@@ -218,7 +227,7 @@ components.html("""
             <h1>AI ARPAS</h1>
             <div style="display: flex; gap: 0.8rem; align-items: center; margin-top: 8px;">
                 <span class="bmkg-badge">BMKG TERINTEGRASI</span>
-                <span style="color: #a0c4e2; font-size: 0.75rem; font-weight: 500;">Sistem Meteorologi & Geofisika</span>
+                <span class="header-subtitle">Sistem Meteorologi & Geofisika</span>
             </div>
         </div>
     </div>
@@ -271,7 +280,7 @@ def get_bmkg_alert_summary():
     except:
         return ["Gagal mengambil data peringatan"]
 
-# --- LAYOUT 2 KOLOM ---
+# --- LAYOUT 2 KOLOM (sama seperti sebelumnya) ---
 left_col, right_col = st.columns([1.2, 2.8], gap="large")
 
 with left_col:
@@ -323,12 +332,10 @@ with right_col:
     def get_context_from_query(user_query):
         context = ""
         q_lower = user_query.lower()
-        # Gempa
         if any(k in q_lower for k in ["gempa terkini", "gempa terbaru", "info gempa", "gempa hari ini"]):
             g = get_gempa_terkini()
             if g:
                 context = f"[DATA GEMPA TERKINI BMKG]\nWaktu: {g['Tanggal']} {g['Jam']}\nMagnitudo: {g['Magnitude']} SR\nLokasi: {g['Wilayah']}\nKedalaman: {g['Kedalaman']}\nPotensi: {g['Potensi']}\n"
-        # Cuaca
         kota_match = re.search(r"(?:cuaca di|cuaca|prakiraan cuaca)\s+(\w+)", q_lower)
         if kota_match:
             kota = kota_match.group(1).capitalize()
