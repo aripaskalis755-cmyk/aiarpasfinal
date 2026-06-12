@@ -146,75 +146,72 @@ st.markdown("""
         color: #991b1b;
     }
     
-    /* CHAT AREA - GAYA MODERN TERANG */
-    .stChatMessage {
-        background: white !important;
-        border-radius: 20px !important;
-        border: 1px solid #e2e8f0 !important;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.02) !important;
-        padding: 12px 18px !important;
-        margin-bottom: 16px !important;
-    }
-    .stChatMessage p, .stChatMessage div {
-        color: #1e293b !important;
-    }
-    .stChatInput textarea {
-        background: white !important;
-        border-radius: 36px !important;
-        border: 1px solid #cbd5e1 !important;
-        color: #0f172a !important;
-        font-size: 0.9rem;
-        padding: 12px 20px !important;
-        box-shadow: none !important;
-    }
-    .stChatInput textarea:focus {
-        border-color: #38bdf8 !important;
-        box-shadow: 0 0 0 3px rgba(56,189,248,0.2) !important;
-    }
-    button[kind="primary"] {
-        background: linear-gradient(90deg, #0284c7, #38bdf8) !important;
-        border: none !important;
-        border-radius: 40px !important;
-        padding: 0.5rem 1.5rem !important;
-        font-weight: 600;
-        color: white !important;
-    }
-    
-    /* TOMBOL PERTANYAAN CEPAT - WARNA PUTIH TERANG */
-    div[data-testid="column"] button {
-        background: white !important;
-        border: 1px solid #cbd5e1 !important;
-        border-radius: 40px !important;
-        color: #0284c7 !important;
-        font-weight: 500 !important;
-        transition: all 0.2s ease;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.02) !important;
-    }
-    div[data-testid="column"] button:hover {
-        background: #f0f9ff !important;
-        border-color: #38bdf8 !important;
-        color: #0369a1 !important;
-        transform: translateY(-1px);
-    }
-    
-    .custom-divider {
-        height: 2px;
-        background: linear-gradient(90deg, transparent, #cbd5e1, #94a3b8, transparent);
-        margin: 1.5rem 0;
-    }
-    
-    .caption-text, .stCaption {
-        color: #64748b !important;
-    }
-    div[data-testid="stMarkdownContainer"] p, div[data-testid="stMarkdownContainer"] li {
-        color: #334155;
-    }
-    h1, h2, h3, h4, h5, h6 {
-        color: #0f172a !important;
-    }
-    .stMarkdown h3 {
-        color: #0f172a !important;
-    }
+   /* ========================= */
+/* CHAT INPUT - FIX VISIBILITY */
+/* ========================= */
+
+/* Container chat input */
+[data-testid="stChatInput"] {
+    background: transparent !important;
+}
+
+/* Kotak input */
+.stChatInput textarea,
+[data-testid="stChatInput"] textarea {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 2px solid #0284c7 !important;
+    border-radius: 30px !important;
+    font-size: 15px !important;
+}
+
+/* Placeholder */
+.stChatInput textarea::placeholder,
+[data-testid="stChatInput"] textarea::placeholder {
+    color: #64748b !important;
+    opacity: 1 !important;
+}
+
+/* Saat diklik */
+.stChatInput textarea:focus,
+[data-testid="stChatInput"] textarea:focus {
+    border-color: #0ea5e9 !important;
+    box-shadow: 0 0 0 3px rgba(14,165,233,0.2) !important;
+}
+
+/* Tombol kirim */
+[data-testid="stChatInput"] button {
+    background: #0284c7 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 50% !important;
+}
+
+/* Hover tombol kirim */
+[data-testid="stChatInput"] button:hover {
+    background: #0369a1 !important;
+}
+
+/* ========================= */
+/* QUICK QUESTION BUTTONS */
+/* ========================= */
+
+div[data-testid="column"] button {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 18px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+}
+
+/* Hover */
+div[data-testid="column"] button:hover {
+    background: #f0f9ff !important;
+    color: #0284c7 !important;
+    border-color: #38bdf8 !important;
+    transform: translateY(-2px);
+}
 </style>
 """, unsafe_allow_html=True)
 
