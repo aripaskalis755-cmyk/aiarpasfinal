@@ -39,7 +39,7 @@ def chat_with_groq(system_prompt, user_message):
     except Exception as e:
         return f"⚠️ Koneksi Groq terganggu: {str(e)}"
 
-# --- STYLE UTAMA DENGAN HEADER YANG LEBIH MENCOLOK ---
+# --- STYLE UTAMA (JUDUL PUTIH) ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -60,7 +60,7 @@ st.markdown("""
     ::-webkit-scrollbar-track { background: #0f1422; border-radius: 10px; }
     ::-webkit-scrollbar-thumb { background: #2c3e66; border-radius: 10px; }
     
-    /* HEADER UTAMA - DIPERKUAT */
+    /* HEADER UTAMA */
     .main-header {
         background: rgba(5, 15, 25, 0.85);
         backdrop-filter: blur(16px);
@@ -75,25 +75,15 @@ st.markdown("""
         flex-wrap: wrap;
     }
     
+    /* JUDUL WARNA PUTIH SOLID */
     .title-section h1 {
         font-family: 'Space Grotesk', monospace;
         font-size: 2.8rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #a5f3fc, #00b4d8, #48cae4, #0077b6);
-        background-size: 300% 300%;
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+        color: white;
         margin: 0;
         letter-spacing: -1px;
-        text-shadow: 0 0 20px rgba(0,180,216,0.5);
-        animation: gradientShift 4s ease infinite;
-    }
-    
-    @keyframes gradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+        text-shadow: 0 0 15px rgba(0,180,216,0.5);
     }
     
     .bmkg-badge {
@@ -219,7 +209,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- HEADER DENGAN TAMPILAN MENCOLOK (HTML + JS) ---
+# --- HEADER (HTML + JS) ---
 components.html("""
 <div class="main-header">
     <div style="display: flex; align-items: center; gap: 1.5rem;">
@@ -350,12 +340,12 @@ with right_col:
     
     def chat_with_arpas(prompt, context=""):
         system = (
-            "Kamu adalah AI Arpas, asisten meteorologi & geofisika resmi BMKG (simulasi). "
+            "Kamu adalah AI Arpas, asisten meteorologi & geofisika yang terintegrasi dengan data BMKG. "
             "Gunakan data real-time yang diberikan dalam [DATA ...] untuk menjawab gempa atau cuaca. "
             "Jawab dalam bahasa Indonesia yang jelas, berwibawa, dan utamakan keselamatan. "
             "Jika tidak ada data real-time, gunakan pengetahuan hingga 2026. "
             "Tolak pertanyaan di luar kebumian dengan sopan. "
-            "Perkenalkan dirimu sebagai AI Arpas (Notice BMKG) yang ditenagai Groq."
+            "Perkenalkan dirimu sebagai AI Arpas yang ditenagai Groq."
         )
         return chat_with_groq(system, f"Konteks: {context}\n\nPertanyaan: {prompt}")
     
