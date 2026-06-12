@@ -39,7 +39,7 @@ def chat_with_groq(system_prompt, user_message):
     except Exception as e:
         return f"⚠️ Koneksi Groq terganggu: {str(e)}"
 
-# --- STYLE DENGAN HEADER YANG LEBIH TEBAL BACKGROUNDNYA ---
+# --- STYLE UTAMA (JUDUL PUTIH) ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -60,22 +60,22 @@ st.markdown("""
     ::-webkit-scrollbar-track { background: #0f1422; border-radius: 10px; }
     ::-webkit-scrollbar-thumb { background: #2c3e66; border-radius: 10px; }
     
-    /* HEADER UTAMA - BACKGROUND LEBIH GELAP DAN TEBAL */
+    /* HEADER UTAMA */
     .main-header {
-        background: rgba(0, 0, 0, 0.75);  /* lebih gelap */
-        backdrop-filter: blur(20px);
+        background: rgba(5, 15, 25, 0.85);
+        backdrop-filter: blur(16px);
         border-radius: 40px;
         padding: 0.8rem 2rem;
         margin-bottom: 2rem;
-        border: 1px solid rgba(0, 200, 255, 0.6);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 20px rgba(0,180,216,0.4);
+        border: 1px solid rgba(0, 200, 255, 0.5);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 15px rgba(0,180,216,0.3);
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
     }
     
-    /* JUDUL - TEBAL DENGAN SHADOW AGAR TERLIHAT JELAS */
+    /* JUDUL WARNA PUTIH SOLID */
     .title-section h1 {
         font-family: 'Space Grotesk', monospace;
         font-size: 2.8rem;
@@ -83,10 +83,9 @@ st.markdown("""
         color: white;
         margin: 0;
         letter-spacing: -1px;
-        text-shadow: 0 0 20px rgba(0,180,216,0.8), 0 2px 4px rgba(0,0,0,0.5);
+        text-shadow: 0 0 15px rgba(0,180,216,0.5);
     }
     
-    /* BADGE BMKG - tetap dengan latar gradien */
     .bmkg-badge {
         background: linear-gradient(135deg, #0077b6, #023e8a);
         padding: 4px 14px;
@@ -95,21 +94,12 @@ st.markdown("""
         font-weight: 700;
         letter-spacing: 1px;
         color: white;
-        box-shadow: 0 0 10px rgba(0,180,216,0.8);
-        border: 1px solid rgba(255,255,255,0.4);
+        box-shadow: 0 0 8px rgba(0,180,216,0.6);
+        border: 1px solid rgba(255,255,255,0.3);
     }
     
-    /* Subtitle - warna putih dengan bayangan */
-    .header-subtitle {
-        color: white !important;
-        font-size: 0.75rem;
-        font-weight: 500;
-        text-shadow: 0 0 6px rgba(0,0,0,0.5);
-    }
-    
-    /* JAM - latar lebih gelap, teks putih terang */
     .live-clock {
-        background: rgba(0, 0, 0, 0.8);
+        background: rgba(0, 0, 0, 0.6);
         backdrop-filter: blur(8px);
         padding: 10px 20px;
         border-radius: 50px;
@@ -117,13 +107,12 @@ st.markdown("""
         font-family: 'Space Grotesk', monospace;
         font-size: 1rem;
         font-weight: 600;
-        color: white !important;
-        box-shadow: 0 0 15px rgba(0,180,216,0.5);
+        color: #b9f3ff;
+        box-shadow: 0 0 10px rgba(0,180,216,0.3);
         letter-spacing: 1px;
-        text-shadow: 0 0 4px black;
     }
     
-    /* KARTU INFO (tidak diubah) */
+    /* KARTU INFO */
     .info-panel {
         background: rgba(15, 25, 40, 0.6);
         backdrop-filter: blur(8px);
@@ -220,7 +209,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- HEADER (HTML + JS) dengan teks putih dan background tebal ---
+# --- HEADER (HTML + JS) ---
 components.html("""
 <div class="main-header">
     <div style="display: flex; align-items: center; gap: 1.5rem;">
@@ -229,7 +218,7 @@ components.html("""
             <h1>AI ARPAS</h1>
             <div style="display: flex; gap: 0.8rem; align-items: center; margin-top: 8px;">
                 <span class="bmkg-badge">BMKG TERINTEGRASI</span>
-                <span class="header-subtitle">Sistem Meteorologi & Geofisika</span>
+                <span style="color: #a0c4e2; font-size: 0.75rem; font-weight: 500;">Sistem Meteorologi & Geofisika</span>
             </div>
         </div>
     </div>
@@ -249,7 +238,7 @@ components.html("""
 </script>
 """, height=120)
 
-# --- DATA FUNCTIONS (sama seperti sebelumnya, tidak perlu diubah) ---
+# --- DATA FUNCTIONS ---
 @st.cache_data(ttl=300)
 def get_gempa_terkini():
     try:
@@ -282,7 +271,7 @@ def get_bmkg_alert_summary():
     except:
         return ["Gagal mengambil data peringatan"]
 
-# --- LAYOUT 2 KOLOM (sama seperti sebelumnya) ---
+# --- LAYOUT 2 KOLOM ---
 left_col, right_col = st.columns([1.2, 2.8], gap="large")
 
 with left_col:
@@ -334,10 +323,12 @@ with right_col:
     def get_context_from_query(user_query):
         context = ""
         q_lower = user_query.lower()
+        # Gempa
         if any(k in q_lower for k in ["gempa terkini", "gempa terbaru", "info gempa", "gempa hari ini"]):
             g = get_gempa_terkini()
             if g:
                 context = f"[DATA GEMPA TERKINI BMKG]\nWaktu: {g['Tanggal']} {g['Jam']}\nMagnitudo: {g['Magnitude']} SR\nLokasi: {g['Wilayah']}\nKedalaman: {g['Kedalaman']}\nPotensi: {g['Potensi']}\n"
+        # Cuaca
         kota_match = re.search(r"(?:cuaca di|cuaca|prakiraan cuaca)\s+(\w+)", q_lower)
         if kota_match:
             kota = kota_match.group(1).capitalize()
