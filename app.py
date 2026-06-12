@@ -39,7 +39,7 @@ def chat_with_groq(system_prompt, user_message):
     except Exception as e:
         return f"⚠️ Koneksi Groq terganggu: {str(e)}"
 
-# --- STYLE TEMA TERANG (LIGHT MODE) ---
+# --- STYLE TEMA TERANG (LIGHT MODE) DENGAN TOMBOL SARAN CERAH ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -172,6 +172,8 @@ st.markdown("""
         border-color: #38bdf8 !important;
         box-shadow: 0 0 0 3px rgba(56,189,248,0.2) !important;
     }
+    
+    /* Tombol primary (kirim, dll) */
     button[kind="primary"] {
         background: linear-gradient(90deg, #0284c7, #38bdf8) !important;
         border: none !important;
@@ -181,26 +183,26 @@ st.markdown("""
         color: white !important;
     }
     
+    /* Tombol saran cepat (di kolom) - gaya terang */
+    div[data-testid="column"] button {
+        background: #f1f5f9 !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 40px !important;
+        color: #0284c7 !important;
+        font-weight: 500 !important;
+        transition: all 0.2s ease;
+        box-shadow: none !important;
+    }
+    div[data-testid="column"] button:hover {
+        background: #e0f2fe !important;
+        border-color: #38bdf8 !important;
+        color: #0369a1 !important;
+    }
+    
     .custom-divider {
         height: 2px;
         background: linear-gradient(90deg, transparent, #cbd5e1, #94a3b8, transparent);
         margin: 1.5rem 0;
-    }
-    
-    .suggestion-chip {
-        background: #f1f5f9;
-        border-radius: 40px;
-        padding: 6px 14px;
-        font-size: 0.75rem;
-        color: #0284c7;
-        cursor: pointer;
-        transition: 0.2s;
-        text-align: center;
-        border: 1px solid #e2e8f0;
-    }
-    .suggestion-chip:hover {
-        background: #e0f2fe;
-        color: #0369a1;
     }
     
     .caption-text, .stCaption {
@@ -247,7 +249,7 @@ components.html("""
 </script>
 """, height=120)
 
-# --- DATA FUNCTIONS (sama seperti sebelumnya) ---
+# --- DATA FUNCTIONS ---
 @st.cache_data(ttl=300)
 def get_gempa_terkini():
     try:
