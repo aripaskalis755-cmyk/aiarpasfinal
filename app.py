@@ -12,7 +12,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- BACA SECRETS ---
+# --- BACA SECRETS (API Key) ---
 GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
 WEATHER_API_KEY = st.secrets["WEATHER_API_KEY"]
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
@@ -39,10 +39,9 @@ def chat_with_groq(system_prompt, user_message):
     except Exception as e:
         return f"⚠️ Koneksi Groq terganggu: {str(e)}"
 
-# --- STYLE CSS (sama seperti yang Anda punya, saya salin utuh dari kode Anda) ---
+# --- STYLE UTAMA DENGAN HEADER YANG LEBIH MENCOLOK ---
 st.markdown("""
 <style>
-    /* IMPORT FONTS */
     @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
     
     /* GLOBAL DARK THEME */
@@ -61,46 +60,66 @@ st.markdown("""
     ::-webkit-scrollbar-track { background: #0f1422; border-radius: 10px; }
     ::-webkit-scrollbar-thumb { background: #2c3e66; border-radius: 10px; }
     
-    /* HEADER UTAMA (GLASS) */
+    /* HEADER UTAMA - DIPERKUAT */
     .main-header {
-        background: rgba(10, 20, 30, 0.65);
-        backdrop-filter: blur(12px);
-        border-radius: 28px;
-        padding: 1rem 2rem;
+        background: rgba(5, 15, 25, 0.85);
+        backdrop-filter: blur(16px);
+        border-radius: 40px;
+        padding: 0.8rem 2rem;
         margin-bottom: 2rem;
-        border: 1px solid rgba(0, 180, 216, 0.3);
-        box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        border: 1px solid rgba(0, 200, 255, 0.5);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 15px rgba(0,180,216,0.3);
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
     }
+    
     .title-section h1 {
         font-family: 'Space Grotesk', monospace;
-        font-size: 2.2rem;
+        font-size: 2.8rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #a5f3fc, #00b4d8, #0077b6);
+        background: linear-gradient(135deg, #a5f3fc, #00b4d8, #48cae4, #0077b6);
+        background-size: 300% 300%;
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
         margin: 0;
-        letter-spacing: -0.5px;
+        letter-spacing: -1px;
+        text-shadow: 0 0 20px rgba(0,180,216,0.5);
+        animation: gradientShift 4s ease infinite;
     }
-    .title-section p {
-        color: #cbd5e1;
-        font-size: 0.75rem;
-        margin: 0;
-        letter-spacing: 1px;
+    
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
-    .live-clock {
-        background: rgba(0, 180, 216, 0.15);
-        padding: 8px 16px;
+    
+    .bmkg-badge {
+        background: linear-gradient(135deg, #0077b6, #023e8a);
+        padding: 4px 14px;
         border-radius: 40px;
-        border: 1px solid rgba(0, 180, 216, 0.4);
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: white;
+        box-shadow: 0 0 8px rgba(0,180,216,0.6);
+        border: 1px solid rgba(255,255,255,0.3);
+    }
+    
+    .live-clock {
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(8px);
+        padding: 10px 20px;
+        border-radius: 50px;
+        border: 1px solid #00b4d8;
         font-family: 'Space Grotesk', monospace;
-        font-size: 0.9rem;
-        font-weight: 500;
+        font-size: 1rem;
+        font-weight: 600;
         color: #b9f3ff;
+        box-shadow: 0 0 10px rgba(0,180,216,0.3);
+        letter-spacing: 1px;
     }
     
     /* KARTU INFO */
@@ -200,15 +219,16 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- HEADER DENGAN JAM REAL-TIME DAN LOGO BMKG ---
+# --- HEADER DENGAN TAMPILAN MENCOLOK (HTML + JS) ---
 components.html("""
-<div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 1rem;">
-    <div style="display: flex; align-items: baseline; gap: 1rem;">
+<div class="main-header">
+    <div style="display: flex; align-items: center; gap: 1.5rem;">
+        <div style="font-size: 3rem; filter: drop-shadow(0 0 8px #00b4d8);">🛰️</div>
         <div class="title-section">
-            <h1 style="margin:0;">AI ARPAS</h1>
-            <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 4px;">
-                <span style="background: #0077b6; padding: 2px 8px; border-radius: 20px; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.5px; color: white;">BMKG</span>
-                <span style="color: #cbd5e1; font-size: 0.7rem;">Sistem Informasi Meteorologi & Geofisika</span>
+            <h1>AI ARPAS</h1>
+            <div style="display: flex; gap: 0.8rem; align-items: center; margin-top: 8px;">
+                <span class="bmkg-badge">BMKG TERINTEGRASI</span>
+                <span style="color: #a0c4e2; font-size: 0.75rem; font-weight: 500;">Sistem Meteorologi & Geofisika</span>
             </div>
         </div>
     </div>
@@ -226,7 +246,7 @@ components.html("""
     setInterval(updateTime, 1000);
     updateTime();
 </script>
-""", height=100)
+""", height=120)
 
 # --- DATA FUNCTIONS ---
 @st.cache_data(ttl=300)
@@ -261,7 +281,7 @@ def get_bmkg_alert_summary():
     except:
         return ["Gagal mengambil data peringatan"]
 
-# --- LAYOUT KOLOM ---
+# --- LAYOUT 2 KOLOM ---
 left_col, right_col = st.columns([1.2, 2.8], gap="large")
 
 with left_col:
@@ -313,10 +333,12 @@ with right_col:
     def get_context_from_query(user_query):
         context = ""
         q_lower = user_query.lower()
+        # Gempa
         if any(k in q_lower for k in ["gempa terkini", "gempa terbaru", "info gempa", "gempa hari ini"]):
             g = get_gempa_terkini()
             if g:
                 context = f"[DATA GEMPA TERKINI BMKG]\nWaktu: {g['Tanggal']} {g['Jam']}\nMagnitudo: {g['Magnitude']} SR\nLokasi: {g['Wilayah']}\nKedalaman: {g['Kedalaman']}\nPotensi: {g['Potensi']}\n"
+        # Cuaca
         kota_match = re.search(r"(?:cuaca di|cuaca|prakiraan cuaca)\s+(\w+)", q_lower)
         if kota_match:
             kota = kota_match.group(1).capitalize()
@@ -360,6 +382,7 @@ with right_col:
                     st.markdown(response)
         st.session_state.messages.append({"role": "assistant", "content": response})
     
+    # Tombol saran cepat
     st.markdown("#### 💡 Pertanyaan cepat")
     col_a, col_b, col_c = st.columns(3)
     if col_a.button("🌍 Gempa terkini", use_container_width=True):
