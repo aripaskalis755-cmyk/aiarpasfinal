@@ -39,14 +39,14 @@ def chat_with_groq(system_prompt, user_message):
     except Exception as e:
         return f"⚠️ Koneksi Groq terganggu: {str(e)}"
 
-# --- STYLE TEMA TERANG DENGAN TOMBOL PUTIH & AUTO-SCROLL ---
+# --- STYLE UTAMA (JUDUL PUTIH) ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
     
-    /* GLOBAL LIGHT THEME */
+    /* GLOBAL DARK THEME */
     .stApp {
-        background: linear-gradient(135deg, #f5f7fc 0%, #eef2f6 100%);
+        background: radial-gradient(circle at 20% 30%, #0a0f1c, #03050b);
         font-family: 'Inter', sans-serif;
     }
     
@@ -57,122 +57,121 @@ st.markdown("""
     
     /* CUSTOM SCROLLBAR */
     ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
-    ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
+    ::-webkit-scrollbar-track { background: #0f1422; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: #2c3e66; border-radius: 10px; }
     
-    /* HEADER UTAMA - GLASS MORPHISM TERANG */
+    /* HEADER UTAMA */
     .main-header {
-        background: rgba(255, 255, 255, 0.7);
+        background: rgba(5, 15, 25, 0.85);
         backdrop-filter: blur(16px);
         border-radius: 40px;
         padding: 0.8rem 2rem;
         margin-bottom: 2rem;
-        border: 1px solid rgba(0, 100, 150, 0.2);
-        box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.02);
+        border: 1px solid rgba(0, 200, 255, 0.5);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 15px rgba(0,180,216,0.3);
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
     }
     
+    /* JUDUL WARNA PUTIH SOLID */
     .title-section h1 {
         font-family: 'Space Grotesk', monospace;
         font-size: 2.8rem;
         font-weight: 800;
-        color: #0f172a;
+        color: white;
         margin: 0;
         letter-spacing: -1px;
-        text-shadow: none;
+        text-shadow: 0 0 15px rgba(0,180,216,0.5);
     }
     
     .bmkg-badge {
-        background: linear-gradient(135deg, #0284c7, #0369a1);
+        background: linear-gradient(135deg, #0077b6, #023e8a);
         padding: 4px 14px;
         border-radius: 40px;
         font-size: 0.8rem;
         font-weight: 700;
         letter-spacing: 1px;
         color: white;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        border: 1px solid rgba(255,255,255,0.5);
+        box-shadow: 0 0 8px rgba(0,180,216,0.6);
+        border: 1px solid rgba(255,255,255,0.3);
     }
     
     .live-clock {
-        background: rgba(255, 255, 255, 0.8);
+        background: rgba(0, 0, 0, 0.6);
         backdrop-filter: blur(8px);
-        padding: 8px 18px;
+        padding: 10px 20px;
         border-radius: 50px;
-        border: 1px solid #cbd5e1;
+        border: 1px solid #00b4d8;
         font-family: 'Space Grotesk', monospace;
         font-size: 1rem;
-        font-weight: 500;
-        color: #0f172a;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        letter-spacing: 0.5px;
+        font-weight: 600;
+        color: #b9f3ff;
+        box-shadow: 0 0 10px rgba(0,180,216,0.3);
+        letter-spacing: 1px;
     }
     
-    /* KARTU INFO - PUTIH DENGAN BAYANGAN LEMBUT */
+    /* KARTU INFO */
     .info-panel {
-        background: white;
+        background: rgba(15, 25, 40, 0.6);
+        backdrop-filter: blur(8px);
         border-radius: 24px;
         padding: 0.8rem 1.2rem;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02), 0 2px 4px -1px rgba(0,0,0,0.01);
+        border: 1px solid rgba(255,255,255,0.08);
         transition: all 0.2s ease;
     }
     .info-panel:hover {
-        border-color: #38bdf8;
-        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
-        transform: translateY(-2px);
+        border-color: #00b4d8;
+        background: rgba(20, 35, 55, 0.7);
     }
     .info-label {
         font-size: 0.65rem;
         text-transform: uppercase;
         letter-spacing: 1.5px;
-        color: #475569;
+        color: #b9c8e6;
         font-weight: 600;
     }
     .info-value {
         font-size: 1.2rem;
         font-weight: 700;
-        color: #0f172a;
+        color: #ffffff;
     }
     .badge-danger {
-        background: #fee2e2;
+        background: rgba(220, 38, 38, 0.2);
         padding: 2px 10px;
         border-radius: 20px;
         font-size: 0.7rem;
         border-left: 3px solid #ef4444;
-        color: #991b1b;
+        color: #fed7d7;
     }
     
-    /* CHAT AREA - GAYA MODERN TERANG */
+    /* CHAT AREA */
     .stChatMessage {
-        background: white !important;
+        background: rgba(20, 30, 45, 0.6) !important;
+        backdrop-filter: blur(8px);
         border-radius: 20px !important;
-        border: 1px solid #e2e8f0 !important;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.02) !important;
+        border: 1px solid rgba(255,255,255,0.05) !important;
         padding: 12px 18px !important;
         margin-bottom: 16px !important;
     }
     .stChatMessage p, .stChatMessage div {
-        color: #1e293b !important;
+        color: #f1f5f9 !important;
     }
     .stChatInput textarea {
-        background: white !important;
+        background: rgba(15, 25, 40, 0.9) !important;
         border-radius: 36px !important;
-        border: 1px solid #cbd5e1 !important;
-        color: #0f172a !important;
+        border: 1px solid #2d4a6e !important;
+        color: white !important;
         font-size: 0.9rem;
         padding: 12px 20px !important;
-        box-shadow: none !important;
     }
     .stChatInput textarea:focus {
-        border-color: #38bdf8 !important;
-        box-shadow: 0 0 0 3px rgba(56,189,248,0.2) !important;
+        border-color: #00b4d8 !important;
+        box-shadow: 0 0 0 2px rgba(0,180,216,0.2) !important;
     }
     button[kind="primary"] {
-        background: linear-gradient(90deg, #0284c7, #38bdf8) !important;
+        background: linear-gradient(90deg, #0077b6, #00b4d8) !important;
         border: none !important;
         border-radius: 40px !important;
         padding: 0.5rem 1.5rem !important;
@@ -180,40 +179,32 @@ st.markdown("""
         color: white !important;
     }
     
-    /* TOMBOL PERTANYAAN CEPAT - WARNA PUTIH TERANG */
-    div[data-testid="column"] button {
-        background: white !important;
-        border: 1px solid #cbd5e1 !important;
-        border-radius: 40px !important;
-        color: #0284c7 !important;
-        font-weight: 500 !important;
-        transition: all 0.2s ease;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.02) !important;
-    }
-    div[data-testid="column"] button:hover {
-        background: #f0f9ff !important;
-        border-color: #38bdf8 !important;
-        color: #0369a1 !important;
-        transform: translateY(-1px);
-    }
-    
     .custom-divider {
         height: 2px;
-        background: linear-gradient(90deg, transparent, #cbd5e1, #94a3b8, transparent);
+        background: linear-gradient(90deg, transparent, #00b4d8, #0077b6, transparent);
         margin: 1.5rem 0;
     }
     
-    .caption-text, .stCaption {
-        color: #64748b !important;
+    .suggestion-chip {
+        background: rgba(0, 180, 216, 0.12);
+        border-radius: 40px;
+        padding: 6px 14px;
+        font-size: 0.75rem;
+        color: #e0f2fe;
+        cursor: pointer;
+        transition: 0.2s;
+        text-align: center;
+    }
+    .suggestion-chip:hover {
+        background: rgba(0, 180, 216, 0.3);
+        color: white;
+    }
+    
+    .caption-text, .stCaption, footer .css-1v3fvcr {
+        color: #9bb4d0 !important;
     }
     div[data-testid="stMarkdownContainer"] p, div[data-testid="stMarkdownContainer"] li {
-        color: #334155;
-    }
-    h1, h2, h3, h4, h5, h6 {
-        color: #0f172a !important;
-    }
-    .stMarkdown h3 {
-        color: #0f172a !important;
+        color: #e2e8f0;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -222,12 +213,12 @@ st.markdown("""
 components.html("""
 <div class="main-header">
     <div style="display: flex; align-items: center; gap: 1.5rem;">
-        <div style="font-size: 2.8rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">🛰️</div>
+        <div style="font-size: 3rem; filter: drop-shadow(0 0 8px #00b4d8);">🛰️</div>
         <div class="title-section">
             <h1>AI ARPAS</h1>
             <div style="display: flex; gap: 0.8rem; align-items: center; margin-top: 8px;">
                 <span class="bmkg-badge">BMKG TERINTEGRASI</span>
-                <span style="color: #475569; font-size: 0.75rem; font-weight: 500;">Sistem Meteorologi & Geofisika</span>
+                <span style="color: #a0c4e2; font-size: 0.75rem; font-weight: 500;">Sistem Meteorologi & Geofisika</span>
             </div>
         </div>
     </div>
@@ -246,29 +237,6 @@ components.html("""
     updateTime();
 </script>
 """, height=120)
-
-# --- AUTO-SCROLL JAVASCRIPT (untuk scroll otomatis ke bawah) ---
-components.html("""
-<script>
-    function scrollToBottom() {
-        const chatArea = document.querySelector('[data-testid="stChatMessage"]');
-        if (chatArea) {
-            chatArea.scrollIntoView({ behavior: 'smooth', block: 'end' });
-        }
-        // Coba scroll ke container utama
-        const containers = document.querySelectorAll('.stChatMessage');
-        if (containers.length > 0) {
-            containers[containers.length-1].scrollIntoView({ behavior: 'smooth', block: 'end' });
-        }
-    }
-    // Jalankan setiap kali ada perubahan DOM
-    const observer = new MutationObserver(function(mutations) {
-        scrollToBottom();
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-    setTimeout(scrollToBottom, 100);
-</script>
-""", height=0)
 
 # --- DATA FUNCTIONS ---
 @st.cache_data(ttl=300)
@@ -312,13 +280,13 @@ with left_col:
     gempa = get_gempa_terkini()
     if gempa:
         mag = gempa['Magnitude']
-        warna = "#dc2626" if float(mag) >= 5.0 else "#ea580c"
+        warna = "#ef4444" if float(mag) >= 5.0 else "#f97316"
         st.markdown(f"""
         <div class="info-panel">
             <div class="info-label">⚠️ GEMPA TERKINI</div>
             <div class="info-value" style="font-size: 2rem; color: {warna};">{mag} <span style="font-size:0.9rem;">SR</span></div>
-            <div style="font-size:0.8rem; color:#334155;">{gempa['Wilayah'][:70]}</div>
-            <div style="font-size:0.7rem; color:#64748b;">{gempa['Tanggal']} {gempa['Jam']} WIB</div>
+            <div style="font-size:0.8rem; color:#e2e8f0;">{gempa['Wilayah'][:70]}</div>
+            <div style="font-size:0.7rem; color:#9bb4d0;">{gempa['Tanggal']} {gempa['Jam']} WIB</div>
             <div class="badge-danger" style="display:inline-block; margin-top:8px;">{gempa['Potensi']}</div>
         </div>
         """, unsafe_allow_html=True)
@@ -332,7 +300,7 @@ with left_col:
         <div class="info-panel">
             <div class="info-label">🌆 CUACA JAKARTA</div>
             <div class="info-value">{curr['temp_c']}°C • {curr['condition']['text']}</div>
-            <div style="color:#475569;">💨 {curr['wind_kph']} km/j | 💧 {curr['humidity']}%</div>
+            <div style="color:#cbd5e1;">💨 {curr['wind_kph']} km/j | 💧 {curr['humidity']}%</div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -340,7 +308,7 @@ with left_col:
     st.markdown(f"""
     <div class="info-panel">
         <div class="info-label">🚨 PERINGATAN DINI CUACA</div>
-        <div style="font-size:0.75rem; color:#334155;">
+        <div style="font-size:0.75rem; color:#e2e8f0;">
             {chr(10).join(alerts[:2])}
         </div>
     </div>
@@ -355,10 +323,12 @@ with right_col:
     def get_context_from_query(user_query):
         context = ""
         q_lower = user_query.lower()
+        # Gempa
         if any(k in q_lower for k in ["gempa terkini", "gempa terbaru", "info gempa", "gempa hari ini"]):
             g = get_gempa_terkini()
             if g:
                 context = f"[DATA GEMPA TERKINI BMKG]\nWaktu: {g['Tanggal']} {g['Jam']}\nMagnitudo: {g['Magnitude']} SR\nLokasi: {g['Wilayah']}\nKedalaman: {g['Kedalaman']}\nPotensi: {g['Potensi']}\n"
+        # Cuaca
         kota_match = re.search(r"(?:cuaca di|cuaca|prakiraan cuaca)\s+(\w+)", q_lower)
         if kota_match:
             kota = kota_match.group(1).capitalize()
@@ -384,7 +354,7 @@ with right_col:
             {"role": "assistant", "content": "Selamat datang di **AI ARPAS** – sistem informasi meteorologi dan geofisika terintegrasi. Saya siap membantu informasi gempa terkini, cuaca real-time, prakiraan iklim, dan fenomena kebumian lainnya. Silakan bertanya!"}
         ]
     
-    chat_container = st.container(height=450)
+    chat_container = st.container(height=420)
     with chat_container:
         for msg in st.session_state.messages:
             with st.chat_message(msg["role"]):
@@ -401,7 +371,6 @@ with right_col:
                 with st.chat_message("assistant"):
                     st.markdown(response)
         st.session_state.messages.append({"role": "assistant", "content": response})
-        st.rerun()
     
     # Tombol saran cepat
     st.markdown("#### 💡 Pertanyaan cepat")
@@ -445,7 +414,7 @@ with right_col:
 # --- FOOTER ---
 st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
 st.markdown(
-    "<div style='text-align: center; font-size: 0.7rem; color: #64748b; padding-bottom: 20px;'>"
+    "<div style='text-align: center; font-size: 0.7rem; color: #9bb4d0; padding-bottom: 20px;'>"
     "© 2026 AI ARPAS · Data gempa & peringatan oleh BMKG | Cuaca oleh WeatherAPI | AI dipercepat oleh Groq"
     "</div>",
     unsafe_allow_html=True
