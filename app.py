@@ -39,7 +39,7 @@ def chat_with_groq(system_prompt, user_message):
     except Exception as e:
         return f"⚠️ Koneksi Groq terganggu: {str(e)}"
 
-# --- STYLE TEMA TERANG DENGAN TOMBOL PUTIH TEKS HITAM & EFEK BIRU ---
+# --- STYLE TEMA TERANG DENGAN TOMBOL PUTIH & AUTO-SCROLL ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -60,7 +60,7 @@ st.markdown("""
     ::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
     ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
     
-    /* HEADER */
+    /* HEADER UTAMA - GLASS MORPHISM TERANG */
     .main-header {
         background: rgba(255, 255, 255, 0.7);
         backdrop-filter: blur(16px);
@@ -74,6 +74,7 @@ st.markdown("""
         align-items: center;
         flex-wrap: wrap;
     }
+    
     .title-section h1 {
         font-family: 'Space Grotesk', monospace;
         font-size: 2.8rem;
@@ -81,7 +82,9 @@ st.markdown("""
         color: #0f172a;
         margin: 0;
         letter-spacing: -1px;
+        text-shadow: none;
     }
+    
     .bmkg-badge {
         background: linear-gradient(135deg, #0284c7, #0369a1);
         padding: 4px 14px;
@@ -93,6 +96,7 @@ st.markdown("""
         box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         border: 1px solid rgba(255,255,255,0.5);
     }
+    
     .live-clock {
         background: rgba(255, 255, 255, 0.8);
         backdrop-filter: blur(8px);
@@ -104,19 +108,21 @@ st.markdown("""
         font-weight: 500;
         color: #0f172a;
         box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        letter-spacing: 0.5px;
     }
     
-    /* KARTU INFO */
+    /* KARTU INFO - PUTIH DENGAN BAYANGAN LEMBUT */
     .info-panel {
         background: white;
         border-radius: 24px;
         padding: 0.8rem 1.2rem;
         border: 1px solid #e2e8f0;
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02), 0 2px 4px -1px rgba(0,0,0,0.01);
         transition: all 0.2s ease;
     }
     .info-panel:hover {
         border-color: #38bdf8;
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
         transform: translateY(-2px);
     }
     .info-label {
@@ -140,57 +146,55 @@ st.markdown("""
         color: #991b1b;
     }
     
-    /* CHAT AREA */
+    /* CHAT AREA - GAYA MODERN TERANG */
     .stChatMessage {
         background: white !important;
         border-radius: 20px !important;
         border: 1px solid #e2e8f0 !important;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.02) !important;
         padding: 12px 18px !important;
         margin-bottom: 16px !important;
     }
     .stChatMessage p, .stChatMessage div {
         color: #1e293b !important;
     }
-    
-    /* TOMBOL KIRIM (form submit) - PUTIH TEKS HITAM */
-    button[kind="primary"] {
+    .stChatInput textarea {
         background: white !important;
-        color: #0f172a !important;
+        border-radius: 36px !important;
         border: 1px solid #cbd5e1 !important;
+        color: #0f172a !important;
+        font-size: 0.9rem;
+        padding: 12px 20px !important;
+        box-shadow: none !important;
+    }
+    .stChatInput textarea:focus {
+        border-color: #38bdf8 !important;
+        box-shadow: 0 0 0 3px rgba(56,189,248,0.2) !important;
+    }
+    button[kind="primary"] {
+        background: linear-gradient(90deg, #0284c7, #38bdf8) !important;
+        border: none !important;
         border-radius: 40px !important;
         padding: 0.5rem 1.5rem !important;
-        font-weight: 600 !important;
-        transition: all 0.2s ease;
-        box-shadow: none !important;
-    }
-    button[kind="primary"]:hover {
-        background: #f8fafc !important;
-        border-color: #94a3b8 !important;
-    }
-    button[kind="primary"]:active {
-        background: #dbeafe !important;
-        border-color: #3b82f6 !important;
-        color: #1e40af !important;
+        font-weight: 600;
+        color: white !important;
     }
     
-    /* TOMBOL PERTANYAAN CEPAT - PUTIH TEKS HITAM */
+    /* TOMBOL PERTANYAAN CEPAT - WARNA PUTIH TERANG */
     div[data-testid="column"] button {
         background: white !important;
-        color: #0f172a !important;
         border: 1px solid #cbd5e1 !important;
         border-radius: 40px !important;
+        color: #0284c7 !important;
         font-weight: 500 !important;
         transition: all 0.2s ease;
-        box-shadow: none !important;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.02) !important;
     }
     div[data-testid="column"] button:hover {
-        background: #f8fafc !important;
-        border-color: #94a3b8 !important;
-    }
-    div[data-testid="column"] button:active {
-        background: #dbeafe !important;
-        border-color: #3b82f6 !important;
-        color: #1e40af !important;
+        background: #f0f9ff !important;
+        border-color: #38bdf8 !important;
+        color: #0369a1 !important;
+        transform: translateY(-1px);
     }
     
     .custom-divider {
@@ -199,15 +203,17 @@ st.markdown("""
         margin: 1.5rem 0;
     }
     
-    .stTextArea textarea {
-        background: white;
-        border-radius: 20px;
-        border: 1px solid #cbd5e1;
-        color: #0f172a;
+    .caption-text, .stCaption {
+        color: #64748b !important;
     }
-    .stTextArea textarea:focus {
-        border-color: #38bdf8;
-        box-shadow: 0 0 0 2px rgba(56,189,248,0.2);
+    div[data-testid="stMarkdownContainer"] p, div[data-testid="stMarkdownContainer"] li {
+        color: #334155;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        color: #0f172a !important;
+    }
+    .stMarkdown h3 {
+        color: #0f172a !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -216,12 +222,12 @@ st.markdown("""
 components.html("""
 <div class="main-header">
     <div style="display: flex; align-items: center; gap: 1.5rem;">
-        <div style="font-size: 2.8rem;">🛰️</div>
+        <div style="font-size: 2.8rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">🛰️</div>
         <div class="title-section">
             <h1>AI ARPAS</h1>
             <div style="display: flex; gap: 0.8rem; align-items: center; margin-top: 8px;">
                 <span class="bmkg-badge">BMKG TERINTEGRASI</span>
-                <span style="color: #475569; font-size: 0.75rem;">Sistem Meteorologi & Geofisika</span>
+                <span style="color: #475569; font-size: 0.75rem; font-weight: 500;">Sistem Meteorologi & Geofisika</span>
             </div>
         </div>
     </div>
@@ -241,16 +247,22 @@ components.html("""
 </script>
 """, height=120)
 
-# --- AUTO-SCROLL JAVASCRIPT ---
+# --- AUTO-SCROLL JAVASCRIPT (untuk scroll otomatis ke bawah) ---
 components.html("""
 <script>
     function scrollToBottom() {
-        const chatContainer = document.querySelector('[data-testid="stChatMessage"]:last-child');
-        if (chatContainer) {
-            chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        const chatArea = document.querySelector('[data-testid="stChatMessage"]');
+        if (chatArea) {
+            chatArea.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+        // Coba scroll ke container utama
+        const containers = document.querySelectorAll('.stChatMessage');
+        if (containers.length > 0) {
+            containers[containers.length-1].scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
     }
-    const observer = new MutationObserver(function() {
+    // Jalankan setiap kali ada perubahan DOM
+    const observer = new MutationObserver(function(mutations) {
         scrollToBottom();
     });
     observer.observe(document.body, { childList: true, subtree: true });
@@ -296,6 +308,7 @@ left_col, right_col = st.columns([1.2, 2.8], gap="large")
 
 with left_col:
     st.markdown("### 📡 PANTAUAN REAL-TIME")
+    
     gempa = get_gempa_terkini()
     if gempa:
         mag = gempa['Magnitude']
@@ -304,7 +317,7 @@ with left_col:
         <div class="info-panel">
             <div class="info-label">⚠️ GEMPA TERKINI</div>
             <div class="info-value" style="font-size: 2rem; color: {warna};">{mag} <span style="font-size:0.9rem;">SR</span></div>
-            <div style="font-size:0.8rem;">{gempa['Wilayah'][:70]}</div>
+            <div style="font-size:0.8rem; color:#334155;">{gempa['Wilayah'][:70]}</div>
             <div style="font-size:0.7rem; color:#64748b;">{gempa['Tanggal']} {gempa['Jam']} WIB</div>
             <div class="badge-danger" style="display:inline-block; margin-top:8px;">{gempa['Potensi']}</div>
         </div>
@@ -319,7 +332,7 @@ with left_col:
         <div class="info-panel">
             <div class="info-label">🌆 CUACA JAKARTA</div>
             <div class="info-value">{curr['temp_c']}°C • {curr['condition']['text']}</div>
-            <div>💨 {curr['wind_kph']} km/j | 💧 {curr['humidity']}%</div>
+            <div style="color:#475569;">💨 {curr['wind_kph']} km/j | 💧 {curr['humidity']}%</div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -327,7 +340,9 @@ with left_col:
     st.markdown(f"""
     <div class="info-panel">
         <div class="info-label">🚨 PERINGATAN DINI CUACA</div>
-        <div style="font-size:0.75rem;">{chr(10).join(alerts[:2])}</div>
+        <div style="font-size:0.75rem; color:#334155;">
+            {chr(10).join(alerts[:2])}
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
@@ -375,26 +390,18 @@ with right_col:
             with st.chat_message(msg["role"]):
                 st.markdown(msg["content"])
     
-    # Form untuk input pesan dengan tombol Kirim
-    with st.form(key="chat_form", clear_on_submit=True):
-        user_input = st.text_area("Pertanyaan", key="user_input", height=80, label_visibility="collapsed", placeholder="Tanyakan tentang gempa, cuaca, atau prediksi...")
-        col_submit, _ = st.columns([1, 5])
-        with col_submit:
-            submitted = st.form_submit_button("Kirim", use_container_width=True)
-        
-        if submitted and user_input.strip():
-            prompt = user_input.strip()
-            st.session_state.messages.append({"role": "user", "content": prompt})
-            with chat_container:
-                with st.chat_message("user"):
-                    st.markdown(prompt)
-                with st.spinner("🛰️ Menghubungkan ke sistem AI Groq & BMKG..."):
-                    konteks = get_context_from_query(prompt)
-                    response = chat_with_arpas(prompt, konteks)
-                    with st.chat_message("assistant"):
-                        st.markdown(response)
-            st.session_state.messages.append({"role": "assistant", "content": response})
-            st.rerun()
+    if user_input := st.chat_input("Tanyakan tentang gempa, cuaca, atau prediksi..."):
+        st.session_state.messages.append({"role": "user", "content": user_input})
+        with chat_container:
+            with st.chat_message("user"):
+                st.markdown(user_input)
+            with st.spinner("🛰️ Menghubungkan ke sistem AI Groq & BMKG..."):
+                konteks = get_context_from_query(user_input)
+                response = chat_with_arpas(user_input, konteks)
+                with st.chat_message("assistant"):
+                    st.markdown(response)
+        st.session_state.messages.append({"role": "assistant", "content": response})
+        st.rerun()
     
     # Tombol saran cepat
     st.markdown("#### 💡 Pertanyaan cepat")
