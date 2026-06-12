@@ -39,7 +39,7 @@ def chat_with_groq(system_prompt, user_message):
     except Exception as e:
         return f"⚠️ Koneksi Groq terganggu: {str(e)}"
 
-# --- STYLE DENGAN WARNA PUTIH UNTUK SEMUA TEKS HEADER ---
+# --- STYLE DENGAN WARNA TEKS HEADER SAMA SEPERTI TEKS KANAN ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -75,18 +75,18 @@ st.markdown("""
         flex-wrap: wrap;
     }
     
-    /* JUDUL WARNA PUTIH */
+    /* JUDUL - warna disamakan dengan teks "AI ARPAS · Asisten Meteorologi & Kebumian" */
     .title-section h1 {
         font-family: 'Space Grotesk', monospace;
         font-size: 2.8rem;
         font-weight: 800;
-        color: white;
+        color: #e0f2fe;  /* warna biru sangat terang, sama seperti heading kanan */
         margin: 0;
         letter-spacing: -1px;
         text-shadow: 0 0 15px rgba(0,180,216,0.5);
     }
     
-    /* BADGE BMKG - teks putih */
+    /* BADGE BMKG - teks putih (tetap) */
     .bmkg-badge {
         background: linear-gradient(135deg, #0077b6, #023e8a);
         padding: 4px 14px;
@@ -99,14 +99,14 @@ st.markdown("""
         border: 1px solid rgba(255,255,255,0.3);
     }
     
-    /* Teks "Sistem Meteorologi & Geofisika" menjadi putih */
+    /* Teks "Sistem Meteorologi & Geofisika" - warna sama seperti judul */
     .header-subtitle {
-        color: white !important;
+        color: #e0f2fe !important;
         font-size: 0.75rem;
         font-weight: 500;
     }
     
-    /* JAM - warna putih solid */
+    /* JAM - warna sama seperti judul */
     .live-clock {
         background: rgba(0, 0, 0, 0.6);
         backdrop-filter: blur(8px);
@@ -116,7 +116,7 @@ st.markdown("""
         font-family: 'Space Grotesk', monospace;
         font-size: 1rem;
         font-weight: 600;
-        color: white !important;
+        color: #e0f2fe !important;
         box-shadow: 0 0 10px rgba(0,180,216,0.3);
         letter-spacing: 1px;
     }
@@ -218,7 +218,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- HEADER (HTML + JS) dengan teks putih ---
+# --- HEADER (HTML + JS) ---
 components.html("""
 <div class="main-header">
     <div style="display: flex; align-items: center; gap: 1.5rem;">
@@ -247,7 +247,7 @@ components.html("""
 </script>
 """, height=120)
 
-# --- DATA FUNCTIONS ---
+# --- DATA FUNCTIONS (sama seperti sebelumnya, tidak diubah) ---
 @st.cache_data(ttl=300)
 def get_gempa_terkini():
     try:
@@ -280,7 +280,7 @@ def get_bmkg_alert_summary():
     except:
         return ["Gagal mengambil data peringatan"]
 
-# --- LAYOUT 2 KOLOM (sama seperti sebelumnya) ---
+# --- LAYOUT 2 KOLOM ---
 left_col, right_col = st.columns([1.2, 2.8], gap="large")
 
 with left_col:
