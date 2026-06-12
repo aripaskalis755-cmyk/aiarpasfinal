@@ -39,14 +39,14 @@ def chat_with_groq(system_prompt, user_message):
     except Exception as e:
         return f"⚠️ Koneksi Groq terganggu: {str(e)}"
 
-# --- STYLE UTAMA (JUDUL PUTIH) ---
+# --- STYLE TEMA TERANG (LIGHT MODE) ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
     
-    /* GLOBAL DARK THEME */
+    /* GLOBAL LIGHT THEME */
     .stApp {
-        background: radial-gradient(circle at 20% 30%, #0a0f1c, #03050b);
+        background: linear-gradient(135deg, #f5f7fc 0%, #eef2f6 100%);
         font-family: 'Inter', sans-serif;
     }
     
@@ -57,121 +57,123 @@ st.markdown("""
     
     /* CUSTOM SCROLLBAR */
     ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #0f1422; border-radius: 10px; }
-    ::-webkit-scrollbar-thumb { background: #2c3e66; border-radius: 10px; }
+    ::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
     
-    /* HEADER UTAMA */
+    /* HEADER UTAMA - GLASS MORPHISM TERANG */
     .main-header {
-        background: rgba(5, 15, 25, 0.85);
+        background: rgba(255, 255, 255, 0.7);
         backdrop-filter: blur(16px);
         border-radius: 40px;
         padding: 0.8rem 2rem;
         margin-bottom: 2rem;
-        border: 1px solid rgba(0, 200, 255, 0.5);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 15px rgba(0,180,216,0.3);
+        border: 1px solid rgba(0, 100, 150, 0.2);
+        box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.02);
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
     }
     
-    /* JUDUL WARNA PUTIH SOLID */
+    /* JUDUL WARNA GELAP */
     .title-section h1 {
         font-family: 'Space Grotesk', monospace;
         font-size: 2.8rem;
         font-weight: 800;
-        color: white;
+        color: #0f172a;
         margin: 0;
         letter-spacing: -1px;
-        text-shadow: 0 0 15px rgba(0,180,216,0.5);
+        text-shadow: none;
     }
     
     .bmkg-badge {
-        background: linear-gradient(135deg, #0077b6, #023e8a);
+        background: linear-gradient(135deg, #0284c7, #0369a1);
         padding: 4px 14px;
         border-radius: 40px;
         font-size: 0.8rem;
         font-weight: 700;
         letter-spacing: 1px;
         color: white;
-        box-shadow: 0 0 8px rgba(0,180,216,0.6);
-        border: 1px solid rgba(255,255,255,0.3);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        border: 1px solid rgba(255,255,255,0.5);
     }
     
     .live-clock {
-        background: rgba(0, 0, 0, 0.6);
+        background: rgba(255, 255, 255, 0.8);
         backdrop-filter: blur(8px);
-        padding: 10px 20px;
+        padding: 8px 18px;
         border-radius: 50px;
-        border: 1px solid #00b4d8;
+        border: 1px solid #cbd5e1;
         font-family: 'Space Grotesk', monospace;
         font-size: 1rem;
-        font-weight: 600;
-        color: #b9f3ff;
-        box-shadow: 0 0 10px rgba(0,180,216,0.3);
-        letter-spacing: 1px;
+        font-weight: 500;
+        color: #0f172a;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        letter-spacing: 0.5px;
     }
     
-    /* KARTU INFO */
+    /* KARTU INFO - PUTIH DENGAN BAYANGAN LEMBUT */
     .info-panel {
-        background: rgba(15, 25, 40, 0.6);
-        backdrop-filter: blur(8px);
+        background: white;
         border-radius: 24px;
         padding: 0.8rem 1.2rem;
-        border: 1px solid rgba(255,255,255,0.08);
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02), 0 2px 4px -1px rgba(0,0,0,0.01);
         transition: all 0.2s ease;
     }
     .info-panel:hover {
-        border-color: #00b4d8;
-        background: rgba(20, 35, 55, 0.7);
+        border-color: #38bdf8;
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+        transform: translateY(-2px);
     }
     .info-label {
         font-size: 0.65rem;
         text-transform: uppercase;
         letter-spacing: 1.5px;
-        color: #b9c8e6;
+        color: #475569;
         font-weight: 600;
     }
     .info-value {
         font-size: 1.2rem;
         font-weight: 700;
-        color: #ffffff;
+        color: #0f172a;
     }
     .badge-danger {
-        background: rgba(220, 38, 38, 0.2);
+        background: #fee2e2;
         padding: 2px 10px;
         border-radius: 20px;
         font-size: 0.7rem;
         border-left: 3px solid #ef4444;
-        color: #fed7d7;
+        color: #991b1b;
     }
     
-    /* CHAT AREA */
+    /* CHAT AREA - GAYA MODERN TERANG */
     .stChatMessage {
-        background: rgba(20, 30, 45, 0.6) !important;
-        backdrop-filter: blur(8px);
+        background: white !important;
         border-radius: 20px !important;
-        border: 1px solid rgba(255,255,255,0.05) !important;
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.02) !important;
         padding: 12px 18px !important;
         margin-bottom: 16px !important;
     }
     .stChatMessage p, .stChatMessage div {
-        color: #f1f5f9 !important;
+        color: #1e293b !important;
     }
     .stChatInput textarea {
-        background: rgba(15, 25, 40, 0.9) !important;
+        background: white !important;
         border-radius: 36px !important;
-        border: 1px solid #2d4a6e !important;
-        color: white !important;
+        border: 1px solid #cbd5e1 !important;
+        color: #0f172a !important;
         font-size: 0.9rem;
         padding: 12px 20px !important;
+        box-shadow: none !important;
     }
     .stChatInput textarea:focus {
-        border-color: #00b4d8 !important;
-        box-shadow: 0 0 0 2px rgba(0,180,216,0.2) !important;
+        border-color: #38bdf8 !important;
+        box-shadow: 0 0 0 3px rgba(56,189,248,0.2) !important;
     }
     button[kind="primary"] {
-        background: linear-gradient(90deg, #0077b6, #00b4d8) !important;
+        background: linear-gradient(90deg, #0284c7, #38bdf8) !important;
         border: none !important;
         border-radius: 40px !important;
         padding: 0.5rem 1.5rem !important;
@@ -181,30 +183,37 @@ st.markdown("""
     
     .custom-divider {
         height: 2px;
-        background: linear-gradient(90deg, transparent, #00b4d8, #0077b6, transparent);
+        background: linear-gradient(90deg, transparent, #cbd5e1, #94a3b8, transparent);
         margin: 1.5rem 0;
     }
     
     .suggestion-chip {
-        background: rgba(0, 180, 216, 0.12);
+        background: #f1f5f9;
         border-radius: 40px;
         padding: 6px 14px;
         font-size: 0.75rem;
-        color: #e0f2fe;
+        color: #0284c7;
         cursor: pointer;
         transition: 0.2s;
         text-align: center;
+        border: 1px solid #e2e8f0;
     }
     .suggestion-chip:hover {
-        background: rgba(0, 180, 216, 0.3);
-        color: white;
+        background: #e0f2fe;
+        color: #0369a1;
     }
     
-    .caption-text, .stCaption, footer .css-1v3fvcr {
-        color: #9bb4d0 !important;
+    .caption-text, .stCaption {
+        color: #64748b !important;
     }
     div[data-testid="stMarkdownContainer"] p, div[data-testid="stMarkdownContainer"] li {
-        color: #e2e8f0;
+        color: #334155;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        color: #0f172a !important;
+    }
+    .stMarkdown h3 {
+        color: #0f172a !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -213,12 +222,12 @@ st.markdown("""
 components.html("""
 <div class="main-header">
     <div style="display: flex; align-items: center; gap: 1.5rem;">
-        <div style="font-size: 3rem; filter: drop-shadow(0 0 8px #00b4d8);">🛰️</div>
+        <div style="font-size: 2.8rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">🛰️</div>
         <div class="title-section">
             <h1>AI ARPAS</h1>
             <div style="display: flex; gap: 0.8rem; align-items: center; margin-top: 8px;">
                 <span class="bmkg-badge">BMKG TERINTEGRASI</span>
-                <span style="color: #a0c4e2; font-size: 0.75rem; font-weight: 500;">Sistem Meteorologi & Geofisika</span>
+                <span style="color: #475569; font-size: 0.75rem; font-weight: 500;">Sistem Meteorologi & Geofisika</span>
             </div>
         </div>
     </div>
@@ -238,7 +247,7 @@ components.html("""
 </script>
 """, height=120)
 
-# --- DATA FUNCTIONS ---
+# --- DATA FUNCTIONS (sama seperti sebelumnya) ---
 @st.cache_data(ttl=300)
 def get_gempa_terkini():
     try:
@@ -280,13 +289,13 @@ with left_col:
     gempa = get_gempa_terkini()
     if gempa:
         mag = gempa['Magnitude']
-        warna = "#ef4444" if float(mag) >= 5.0 else "#f97316"
+        warna = "#dc2626" if float(mag) >= 5.0 else "#ea580c"
         st.markdown(f"""
         <div class="info-panel">
             <div class="info-label">⚠️ GEMPA TERKINI</div>
             <div class="info-value" style="font-size: 2rem; color: {warna};">{mag} <span style="font-size:0.9rem;">SR</span></div>
-            <div style="font-size:0.8rem; color:#e2e8f0;">{gempa['Wilayah'][:70]}</div>
-            <div style="font-size:0.7rem; color:#9bb4d0;">{gempa['Tanggal']} {gempa['Jam']} WIB</div>
+            <div style="font-size:0.8rem; color:#334155;">{gempa['Wilayah'][:70]}</div>
+            <div style="font-size:0.7rem; color:#64748b;">{gempa['Tanggal']} {gempa['Jam']} WIB</div>
             <div class="badge-danger" style="display:inline-block; margin-top:8px;">{gempa['Potensi']}</div>
         </div>
         """, unsafe_allow_html=True)
@@ -300,7 +309,7 @@ with left_col:
         <div class="info-panel">
             <div class="info-label">🌆 CUACA JAKARTA</div>
             <div class="info-value">{curr['temp_c']}°C • {curr['condition']['text']}</div>
-            <div style="color:#cbd5e1;">💨 {curr['wind_kph']} km/j | 💧 {curr['humidity']}%</div>
+            <div style="color:#475569;">💨 {curr['wind_kph']} km/j | 💧 {curr['humidity']}%</div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -308,7 +317,7 @@ with left_col:
     st.markdown(f"""
     <div class="info-panel">
         <div class="info-label">🚨 PERINGATAN DINI CUACA</div>
-        <div style="font-size:0.75rem; color:#e2e8f0;">
+        <div style="font-size:0.75rem; color:#334155;">
             {chr(10).join(alerts[:2])}
         </div>
     </div>
@@ -323,12 +332,10 @@ with right_col:
     def get_context_from_query(user_query):
         context = ""
         q_lower = user_query.lower()
-        # Gempa
         if any(k in q_lower for k in ["gempa terkini", "gempa terbaru", "info gempa", "gempa hari ini"]):
             g = get_gempa_terkini()
             if g:
                 context = f"[DATA GEMPA TERKINI BMKG]\nWaktu: {g['Tanggal']} {g['Jam']}\nMagnitudo: {g['Magnitude']} SR\nLokasi: {g['Wilayah']}\nKedalaman: {g['Kedalaman']}\nPotensi: {g['Potensi']}\n"
-        # Cuaca
         kota_match = re.search(r"(?:cuaca di|cuaca|prakiraan cuaca)\s+(\w+)", q_lower)
         if kota_match:
             kota = kota_match.group(1).capitalize()
@@ -414,7 +421,7 @@ with right_col:
 # --- FOOTER ---
 st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
 st.markdown(
-    "<div style='text-align: center; font-size: 0.7rem; color: #9bb4d0; padding-bottom: 20px;'>"
+    "<div style='text-align: center; font-size: 0.7rem; color: #64748b; padding-bottom: 20px;'>"
     "© 2026 AI ARPAS · Data gempa & peringatan oleh BMKG | Cuaca oleh WeatherAPI | AI dipercepat oleh Groq"
     "</div>",
     unsafe_allow_html=True
